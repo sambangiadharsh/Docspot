@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -24,7 +25,7 @@ const Register = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        `http://localhost:8000/api/${formData.role}/register`,
+        `${BASE_URL}/api/${formData.role}/register`,
         { ...formData, age: Number(formData.age) }
       );
       if (res.status === 200 || res.status === 201) {

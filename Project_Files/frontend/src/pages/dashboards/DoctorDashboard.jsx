@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const DoctorDashboard = () => {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ const DoctorDashboard = () => {
 
   const fetchAppointments = async () => {
     try {
-      const res = await axios.get(`http://localhost:8000/api/doctor/appointments?date=${date}`, {
+      const res = await axios.get(`${BASE_URL}/api/doctor/appointments?date=${date}`, {
         withCredentials: true,
       });
       setAppointments(res.data);
@@ -22,7 +23,7 @@ const DoctorDashboard = () => {
   const handleStatusUpdate = async (id, status) => {
     try {
       await axios.patch(
-        `http://localhost:8000/api/doctor/appointment-status/${id}`,
+        `${BASE_URL}/api/doctor/appointment-status/${id}`,
         { status },
         { withCredentials: true }
       );
@@ -34,7 +35,7 @@ const DoctorDashboard = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:8000/api/doctor/logout', {}, { withCredentials: true });
+      await axios.post(`${BASE_URL}/api/doctor/logout`, {}, { withCredentials: true });
       navigate('/login');
     } catch (err) {
       console.error('Logout failed', err);

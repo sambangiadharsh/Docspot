@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import Footer from '../../components/Footer';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const PatientDashboard = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const PatientDashboard = () => {
 
   const fetchAppointments = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/patient/appointments', {
+      const res = await axios.get(`${BASE_URL}/api/patient/appointments`, {
         withCredentials: true,
       });
       setAppointments(res.data);
@@ -36,7 +37,7 @@ const PatientDashboard = () => {
 
   const handleSearch = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/patient/search-doctors', {
+      const res = await axios.get(`${BASE_URL}/api/patient/search-doctors`, {
         params: { speciality, location },
         withCredentials: true,
       });
@@ -49,7 +50,7 @@ const PatientDashboard = () => {
   const handleBookAppointment = async () => {
     try {
       const res = await axios.post(
-        'http://localhost:8000/api/patient/book',
+        `${BASE_URL}/api/patient/book`,
         {
           doctorId: selectedDoctor._id,
           date,
@@ -72,7 +73,7 @@ const PatientDashboard = () => {
 
   const handleLogout = () => {
     axios
-      .post('http://localhost:8000/api/patient/logout', {}, { withCredentials: true })
+      .post(`${BASE_URL}/api/patient/logout`, {}, { withCredentials: true })
       .then(() => navigate('/login'))
       .catch((err) => console.error('Logout failed', err));
   };

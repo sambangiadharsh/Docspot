@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import Footer from '../../components/Footer';
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const AdminDashboard = () => {
 
   const fetchDoctors = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/admin/doctors', { withCredentials: true });
+      const res = await axios.get(`${BASE_URL}/api/admin/doctors`, { withCredentials: true });
       setDoctors(res.data);
       const stats = res.data.reduce((acc, doctor) => {
         acc[doctor.speciality] = (acc[doctor.speciality] || 0) + 1;
@@ -53,7 +54,7 @@ const AdminDashboard = () => {
 
   const handleSearch = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/admin/search-doctors', {
+      const res = await axios.get(`${BASE_URL}/api/admin/search-doctors`, {
         params: { specialization, location, name },
         withCredentials: true,
       });
@@ -68,13 +69,13 @@ const AdminDashboard = () => {
   const handleAddOrUpdateDoctor = async () => {
     try {
       if (editDoctorId) {
-        await axios.put(`http://localhost:8000/api/admin/update-doctor/${editDoctorId}`, formData, {
+        await axios.put(`${BASE_URL}/api/admin/update-doctor/${editDoctorId}`, formData, {
           withCredentials: true,
         });
         alert('Doctor updated successfully');
         setEditDoctorId(null);
       } else {
-        await axios.post('http://localhost:8000/api/admin/add-doctor', formData, {
+        await axios.post(`${BASE_URL}/api/admin/add-doctor`, formData, {
           withCredentials: true,
         });
         alert('Doctor added successfully');
@@ -105,7 +106,7 @@ const AdminDashboard = () => {
     const confirmDelete = window.confirm('Are you sure you want to delete this doctor?');
     if (!confirmDelete) return;
     try {
-      await axios.delete(`http://localhost:8000/api/admin/delete-doctor/${id}`, {
+      await axios.delete(`${BASE_URL}/api/admin/delete-doctor/${id}`, {
         withCredentials: true,
       });
       alert('Doctor deleted');
@@ -141,7 +142,7 @@ const AdminDashboard = () => {
   };
 
   const handleLogout = () => {
-    axios.post('http://localhost:8000/api/admin/logout', {}, { withCredentials: true })
+    axios.post(`${BASE_URL}/api/admin/logout`, {}, { withCredentials: true })
       .then(() => navigate('/login'))
       .catch((err) => console.error('Logout failed', err));
   };
