@@ -13,7 +13,8 @@ dotenv.config();
 const app = express();
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173','https://docspot-1-2net.onrender.com'],
+
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],  // or wherever your frontend runs
   credentials: true
 }));
