@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const auth=require("../middleware/auth");
 const Appointment=require("../models/Appointment");
+const sendEmail=require("../utils/mailer");
 
 
 // Register a new user
@@ -95,12 +96,29 @@ console.log('Decoded user:', req.user);
 
   try {
     const doctor = await Doctor.findById(doctorId);
+    const patient=await User.findById(patientId);
     if (!doctor) return res.status(404).json({ msg: 'Doctor not found' });
     const count = await Appointment.countDocuments({ doctorId, date, slot });
     const limit = doctor.maxAppointments[slot];
     if (count >= limit) return res.status(400).json({ msg: 'Slot full' });
     const appointment = new Appointment({ patientId, doctorId, date, slot, tokenNumber: count + 1, documents });
+
+
     await appointment.save();
+    //Email-Template
+    const emailHTML = `
+      <h2>Appointment Confirmed</h2>
+      <p>Dear ${patient.name},</p>
+      <p>Your appointment with <strong>Dr. ${doctor.name}</strong> has been successfully booked.</p>
+      <ul>
+        <li><strong>Date:</strong> ${date}</li>
+        <li><strong>Slot:</strong> ${slot}</li>
+        <li><strong>Doctor:</strong> ${doctor.speciality}, ${doctor.hospital}</li>
+      </ul>
+      <p>Thank you for using DocSpot!</p>
+    `;
+
+    await sendEmail(patient.email, 'Your Appointment is Confirmed', emailHTML);
     res.json({ msg: 'Appointment booked', tokenNumber: count + 1 });
   } catch (err) {
     res.status(500).send('Server error');

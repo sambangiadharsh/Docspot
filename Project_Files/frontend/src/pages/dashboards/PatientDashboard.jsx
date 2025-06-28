@@ -186,7 +186,7 @@ const PatientDashboard = () => {
                       </div>
                     )}
                     <div className="text-center">
-                      <h3 className="text-xl font-bold mb-1">Dr. {doc.name}</h3>
+                      <h3 className="text-xl font-bold mb-1"> {doc.name}</h3>
                       <p className="text-sm text-gray-200">
                         <strong>Speciality:</strong> {doc.speciality}
                       </p>
@@ -198,7 +198,7 @@ const PatientDashboard = () => {
           )
         )}
 
-         <div className="mx-10 mt-12 flex flex-col gap-4">
+         <div className=" mt-12 flex flex-col gap-4">
           <motion.button
             onClick={() => setShowUpcoming(!showUpcoming)}
             className="bg-indigo-600 hover:bg-indigo-700 transition px-6 py-3 rounded shadow flex items-center gap-2 self-start"
@@ -217,7 +217,7 @@ const PatientDashboard = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {upcoming.map((appt) => (
                     <motion.div key={appt._id} className="bg-white/10 border border-white/20 p-6 rounded-xl shadow-md hover:shadow-lg transition">
-                      <p><strong>Doctor:</strong> {appt.doctorName}</p>
+                      <p><strong>Doctor:</strong> {appt.doctorId.name}</p>
                       <p><strong>Date:</strong> {appt.date}</p>
                       <p><strong>Slot:</strong> {appt.slot}</p>
                     </motion.div>
@@ -245,7 +245,7 @@ const PatientDashboard = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {completed.map((appt) => (
                     <motion.div key={appt._id} className="bg-white/10 border border-white/20 p-6 rounded-xl shadow-md hover:shadow-lg transition">
-                      <p><strong>Doctor:</strong> {appt.doctorName}</p>
+                      <p><strong>Doctor:</strong> {appt.doctorId.name}</p>
                       <p><strong>Date:</strong> {appt.date}</p>
                       <p><strong>Slot:</strong> {appt.slot}</p>
                     </motion.div>
